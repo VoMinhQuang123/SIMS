@@ -29,26 +29,26 @@
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="StartDate">Start Date</label>
-                        <input asp-for="StartDate" class="form-control" type="date" value="@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                        <label asp-for="CreatedAt">CreatedAt Date</label>
+                        <input asp-for="CreatedAt" class="form-control" type="date" value="@DateOnly.FromDateTime(DateTime.Now).ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="EndDate">End Date</label>
-                        <input asp-for="EndDate" class="form-control" type="date" />
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                        <label asp-for="UpdatedAt">End Date</label>
+                        <input asp-for="UpdatedAt" class="form-control" type="date" />
+                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Vote">Vote (0-5)</label>
-                        <input asp-for="Vote" class="form-control" type="number" min="0" max="5" />
-                        <span asp-validation-for="Vote" class="text-danger"></span>
+                        <label asp-for="TypeID">Vote (0-5)</label>
+                        <input asp-for="TypeID" class="form-control" type="number" min="0" max="5" />
+                        <span asp-validation-for="TypeID" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3 form-check">
-                        <input asp-for="Status" class="form-check-input" type="checkbox" checked="checked" />
-                        <label asp-for="Status" class="form-check-label">Active</label>
+                        <input asp-for="TypeName" class="form-check-input" type="checkbox" checked="checked" />
+                        <label asp-for="TypeName" class="form-check-label">Active</label>
                     </div>
 
                     <div class="mb-3">
