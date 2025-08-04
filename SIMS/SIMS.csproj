@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Register\**" />
     <Compile Remove="Views\Shared\Partials\**" />
+    <Content Remove="Views\Register\**" />
     <Content Remove="Views\Shared\Partials\**" />
+    <EmbeddedResource Remove="Views\Register\**" />
     <EmbeddedResource Remove="Views\Shared\Partials\**" />
+    <None Remove="Views\Register\**" />
     <None Remove="Views\Shared\Partials\**" />
   </ItemGroup>
 
@@ -24,10 +28,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Register\" />
   </ItemGroup>
 
 </Project>

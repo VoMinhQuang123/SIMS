@@ -1,14 +1,7 @@
 ﻿namespace SIMS.Models
 {
-    public class CourseViewModel
+    public class CourseViewModel()
     {
-        public int CourseID { get; set; }
-        public string NameCourse { get; set; }
-        public string DescriptionCourse { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
 
-        public int TypeID { get; set; }
-        public string TypeName { get; set; } // optional
     }
 }
