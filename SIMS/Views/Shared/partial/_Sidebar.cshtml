@@ -53,20 +53,30 @@
                 </a>
                 <div class="collapse" id="collapseLayout1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="@Url.Action("Create","Teacher")">
                             Create new teacher
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="@Url.Action("Index", "Teacher")">
                             Teacher Lists
                         </a>
                     </nav>
                 </div>
 
-                <a class="nav-link collapsed" href="#"  >
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout2" aria-expanded="false" aria-controls="collapseLayout2">
                     <div class="sb-nav-link-icon"><i class="fa fa-book"></i></div>
                     Classroom
                     <div class="sb-sidenav-collapse-arrow"></div>
                 </a>
+                <div class="collapse" id="collapseLayout2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="@Url.Action("Create", "Classroom")">
+                            Create new teacher
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Classroom")">
+                            Teacher Lists
+                        </a>
+                    </nav>
+                </div>
 
                 <a class="nav-link collapsed" href="#" >
                     <div class="sb-nav-link-icon"><i class="fa fa-user"></i></div>
