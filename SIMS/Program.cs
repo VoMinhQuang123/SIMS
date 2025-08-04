@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SIMS.BDContext;
+
 namespace SIMS
 {
     public class Program
@@ -5,6 +8,9 @@ namespace SIMS
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Configure database with EntityFramework
+            builder.Services.AddDbContext<SIMSDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
