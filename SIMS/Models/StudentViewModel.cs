@@ -18,6 +18,13 @@ namespace SIMS.Models
 
         public string Address { get; set; }
 
-        public string Major { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public int TypeID { get; set; }
+        public string TypeName { get; set; } // optional
+
+        public int? ClassID { get; set; }
+        public string ClassName { get; set; } // optional
     }
 }

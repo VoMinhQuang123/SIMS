@@ -17,7 +17,7 @@
             <th>Date of Birth</th>
             <th>Email</th>
             <th>Address</th>
-            <th>Major</th>
+            <th>TypeName</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -29,7 +29,7 @@
                 <td>@student.DoB.ToString("dd/MM/yyyy")</td>
                 <td>@student.Email</td>
                 <td>@student.Address</td>
-                <td>@student.Major</td>
+                <td>@student.TypeName</td>
                 <td>
                     <a asp-action="Delete" asp-route-id="@student.Id" class="btn btn-danger">Delete</a>
                     <a asp-action="Edit" asp-route-id="@student.Id" class="btn btn-warning">Edit</a>
