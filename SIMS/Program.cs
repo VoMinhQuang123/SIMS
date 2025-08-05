@@ -33,7 +33,9 @@ namespace SIMS
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Login}/{action=Index}/{id?}")
+                pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
+                //pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
+                //pattern: "{controller=Dashboard_Student}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

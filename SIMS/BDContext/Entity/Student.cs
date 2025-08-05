@@ -33,6 +33,10 @@ namespace SIMS.BDContext.Entity
         [ForeignKey("Class")]
         public int? ClassID { get; set; }
         public Class? Class { get; set; }
+
+        public int UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User? User { get; set; }
     }
 
 }

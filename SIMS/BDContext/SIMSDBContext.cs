@@ -5,6 +5,7 @@ namespace SIMS.BDContext
     internal class SIMSDBContext : DbContext
     {
         public SIMSDBContext(DbContextOptions<SIMSDBContext> options) : base(options) { }
+        public DbSet<User> UsersDb { get; set; }
         public DbSet<Admin> AdminsDb { get; set; }
         public DbSet<Entity.Type> TypesDb { get; set; }
         public DbSet<Class> ClassesDb { get; set; }
@@ -16,9 +17,20 @@ namespace SIMS.BDContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Users
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<User>().HasKey(u => u.UserID);
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<User>().Property(u => u.Role).HasDefaultValue("Student");
+
             // Admin
             modelBuilder.Entity<Admin>().ToTable("Admin");
-            modelBuilder.Entity<Entity.Admin>().HasKey(a => a.AdminID);
+            modelBuilder.Entity<Admin>().HasKey(a => a.AdminID);
+            modelBuilder.Entity<Admin>()
+                .HasOne<User>()                      // ✅ liên kết 1-1 với Users
+                .WithMany()
+                .HasForeignKey(a => a.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Type
             modelBuilder.Entity<Entity.Type>().ToTable("Type");
@@ -33,10 +45,20 @@ namespace SIMS.BDContext
             // Student
             modelBuilder.Entity<Student>().ToTable("Student");
             modelBuilder.Entity<Student>().HasKey(s => s.StudentID);
+            modelBuilder.Entity<Student>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(s => s.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Teacher
             modelBuilder.Entity<Teacher>().ToTable("Teacher");
             modelBuilder.Entity<Teacher>().HasKey(t => t.TeacherID);
+            modelBuilder.Entity<Teacher>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(t => t.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Course
             modelBuilder.Entity<Course>().ToTable("Course");

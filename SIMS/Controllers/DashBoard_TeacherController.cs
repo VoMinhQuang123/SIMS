@@ -2,7 +2,7 @@
 
 namespace SIMS.Controllers
 {
-    public class DashboardController : Controller
+    public class DashBoard_TeacherController : Controller
     {
         public IActionResult Index()
         {
