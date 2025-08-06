@@ -2,7 +2,7 @@
 using SIMS.BDContext.Entity;
 namespace SIMS.BDContext
 {
-    internal class SIMSDBContext : DbContext
+    public class SIMSDBContext : DbContext
     {
         public SIMSDBContext(DbContextOptions<SIMSDBContext> options) : base(options) { }
         public DbSet<User> UsersDb { get; set; }
@@ -27,9 +27,9 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Admin>().ToTable("Admin");
             modelBuilder.Entity<Admin>().HasKey(a => a.AdminID);
             modelBuilder.Entity<Admin>()
-                .HasOne<User>()                      // ✅ liên kết 1-1 với Users
-                .WithMany()
-                .HasForeignKey(a => a.UserID)
+                .HasOne(a => a.User)
+                .WithOne(u => u.Admin)
+                .HasForeignKey<Admin>(a => a.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Type
@@ -46,18 +46,18 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Student>().ToTable("Student");
             modelBuilder.Entity<Student>().HasKey(s => s.StudentID);
             modelBuilder.Entity<Student>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(s => s.UserID)
+                .HasOne(s => s.User)
+                .WithOne(u => u.Student)
+                .HasForeignKey<Student>(s => s.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Teacher
             modelBuilder.Entity<Teacher>().ToTable("Teacher");
             modelBuilder.Entity<Teacher>().HasKey(t => t.TeacherID);
             modelBuilder.Entity<Teacher>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(t => t.UserID)
+                .HasOne(t => t.User)
+                .WithOne(u => u.Teacher)
+                .HasForeignKey<Teacher>(t => t.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Course

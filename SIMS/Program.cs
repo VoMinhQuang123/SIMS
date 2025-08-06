@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SIMS.BDContext;
+using SIMS.Interface;
+using SIMS.Repository;
+using SIMS.Service;
 
 namespace SIMS
 {
@@ -14,6 +17,8 @@ namespace SIMS
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<ILogin, LoginRepository>();
+            builder.Services.AddScoped<Login_Service>();
 
             var app = builder.Build();
 
@@ -31,11 +36,24 @@ namespace SIMS
             app.UseAuthorization();
 
             app.MapStaticAssets();
+            //app.MapControllerRoute(
+            //    name: "admin",
+            //    pattern: "admin/{controller=Dashboard_Admin}/{action=Index}/{id?}");
+
+            //app.MapControllerRoute(
+            //    name: "teacher",
+            //    pattern: "teacher/{controller=Dashboard_Teacher}/{action=Index}/{id?}");
+
+            //app.MapControllerRoute(
+            //    name: "student",
+            //    pattern: "student/{controller=Dashboard_Student}/{action=Index}/{id?}");
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
-                //pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
+                //pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
+                pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
                 //pattern: "{controller=Dashboard_Student}/{action=Index}/{id?}")
+                //pattern: "{controller=Login}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

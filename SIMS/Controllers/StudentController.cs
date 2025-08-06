@@ -5,6 +5,7 @@ namespace SIMS.Controllers
 {
     public class StudentController : Controller
     {
+
         
     }
 }
