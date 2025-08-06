@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SIMS.Repository
 {
-    public class LoginRepository : ILogin
+    public class Repository_Login : ILogin
     {
         private readonly SIMSDBContext _connection;
 
-        public LoginRepository(SIMSDBContext connection)
+        public Repository_Login(SIMSDBContext connection)
         {
             _connection = connection;
         }

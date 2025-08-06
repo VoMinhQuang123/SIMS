@@ -3,10 +3,11 @@ using SIMS.Interface;
 
 namespace SIMS.Service
 {
-    public class Login_Service
+    public class Service_Login
     {
+        // Inheriting interfaces
         private readonly ILogin login;
-        public Login_Service(ILogin login)
+        public Service_Login(ILogin login)
         {
             this.login = login;
         }
@@ -18,7 +19,7 @@ namespace SIMS.Service
                 return null;
             }
 
-            return user.PasswordHash.Equals(password) ? user : null;
+            return user.PasswordHash!.Equals(password) ? user : null;
         }
     }
 }

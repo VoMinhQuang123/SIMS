@@ -11,13 +11,13 @@ namespace SIMS.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly Login_Service loginService;
+        private readonly Service_Login loginService;
 
-        public LoginController(Login_Service loginService)
+        public LoginController(Service_Login loginService)
         {
             this.loginService = loginService;
         }
-        public Login_Service LoginService => loginService;
+        public Service_Login LoginService => loginService;
         [HttpGet]
         public async Task<IActionResult> Index()
         {
