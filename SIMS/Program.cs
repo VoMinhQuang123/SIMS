@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SIMS.BDContext;
+using SIMS.Interface;
+using SIMS.Repository;
+using SIMS.Service;
 
 namespace SIMS
 {
@@ -14,6 +17,10 @@ namespace SIMS
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<StudentService>();
+
 
             var app = builder.Build();
 

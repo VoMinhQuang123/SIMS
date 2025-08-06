@@ -2,19 +2,20 @@
 using SIMS.BDContext.Entity;
 namespace SIMS.BDContext
 {
-    internal class SIMSDBContext : DbContext
+    public class SIMSDBContext : DbContext
     {
         public SIMSDBContext(DbContextOptions<SIMSDBContext> options) : base(options) { }
         public DbSet<User> UsersDb { get; set; }
         public DbSet<Admin> AdminsDb { get; set; }
         public DbSet<Entity.Type> TypesDb { get; set; }
         public DbSet<Class> ClassesDb { get; set; }
-        public DbSet<Entity.Student> StudentsDb { get; set; }
+        public DbSet<Student> StudentsDb { get; set; } = null!;
         public DbSet<Teacher> TeachersDb { get; set; }
         public DbSet<Course> CoursesDb { get; set; }
         public DbSet<Semester> SemestersDb { get; set; }
         public DbSet<TeachingAssignment> TeachingAssignmentsDb { get; set; }
-
+       
+            
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Users
@@ -27,10 +28,9 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Admin>().ToTable("Admin");
             modelBuilder.Entity<Admin>().HasKey(a => a.AdminID);
             modelBuilder.Entity<Admin>()
-                .HasOne<User>()                      // ✅ liên kết 1-1 với Users
-                .WithMany()
-                .HasForeignKey(a => a.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(a => a.User)
+                .WithOne(u => u.Admin)
+                .HasForeignKey<Admin>(a => a.UserID); // 👈 xác định FK ở bảng Admin
 
             // Type
             modelBuilder.Entity<Entity.Type>().ToTable("Type");
