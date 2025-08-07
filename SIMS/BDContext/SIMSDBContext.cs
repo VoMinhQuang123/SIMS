@@ -42,6 +42,8 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Class>().Property(c => c.CreatedAt).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<Class>().Property(c => c.UpdatedAt).HasDefaultValueSql("GETDATE()");
 
+
+
             // Student
             modelBuilder.Entity<Student>().ToTable("Student");
             modelBuilder.Entity<Student>().HasKey(s => s.StudentID);

@@ -4,7 +4,7 @@ using SIMS.Models;
 
 namespace SIMS.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
        
     }
