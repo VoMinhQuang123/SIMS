@@ -9,12 +9,13 @@ namespace SIMS.BDContext
         public DbSet<Admin> AdminsDb { get; set; }
         public DbSet<Entity.Type> TypesDb { get; set; }
         public DbSet<Class> ClassesDb { get; set; }
-        public DbSet<Entity.Student> StudentsDb { get; set; }
+        public DbSet<Student> StudentsDb { get; set; } = null!;
         public DbSet<Teacher> TeachersDb { get; set; }
         public DbSet<Course> CoursesDb { get; set; }
         public DbSet<Semester> SemestersDb { get; set; }
         public DbSet<TeachingAssignment> TeachingAssignmentsDb { get; set; }
-
+       
+            
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Users
@@ -29,8 +30,12 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Admin>()
                 .HasOne(a => a.User)
                 .WithOne(u => u.Admin)
+<<<<<<< HEAD
                 .HasForeignKey<Admin>(a => a.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
+=======
+                .HasForeignKey<Admin>(a => a.UserID); // 👈 xác định FK ở bảng Admin
+>>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
 
             // Type
             modelBuilder.Entity<Entity.Type>().ToTable("Type");

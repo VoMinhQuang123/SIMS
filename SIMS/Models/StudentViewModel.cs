@@ -6,6 +6,7 @@ namespace SIMS.Models
     {
         public int StudentID { get; set; }
 
+<<<<<<< HEAD
         [Required(ErrorMessage = "Student name is required.")]
         [Display(Name = "Full Name")]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
@@ -46,5 +47,33 @@ namespace SIMS.Models
         [Required(ErrorMessage = "User ID is required.")]
         [Display(Name = "User ID")]
         public int UserID { get; set; }
+=======
+        [Required(ErrorMessage = "Full name is required")]
+        public string? Name { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? DoB { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string? Email { get; set; }
+
+        public string? Address { get; set; }
+
+        public int TypeID { get; set; }
+        public string? TypeName { get; set; } // Tên loại: Student, Teacher...
+
+        public int? ClassID { get; set; }
+        public string? ClassName { get; set; } // Tên lớp nếu cần hiển thị
+
+        public int UserID { get; set; }
+        public string? Username { get; set; } // Tên tài khoản (bảng Users)
+
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
+        // Thêm cho mục đích hiển thị hoặc thao tác UI
+        public bool IsSelected { get; set; } // Dùng trong checkbox list, select table...
+>>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
     }
 }
