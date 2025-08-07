@@ -1,10 +1,17 @@
-﻿using SIMS.BDContext.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Interface;
 
 namespace SIMS.Repository
 {
     public class Repository_Teacher : ITeacher
     {
+        private readonly SIMSDBContext _context;
+        public Repository_Teacher(SIMSDBContext context)
+        {
+            _context = context;
+        }
         public Task AddTeacherAsync(Teacher entity)
         {
             throw new NotImplementedException();
@@ -15,9 +22,11 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Teacher>> GetAllTeacheresAsync()
+        public async Task<List<Teacher>> GetAllTeacheresAsync()
         {
-            throw new NotImplementedException();
+            return await _context.TeachersDb
+              .Include(c => c.Type)
+              .ToListAsync();
         }
 
         public Task<Teacher?> GetTeacherByIDAsync(int id)

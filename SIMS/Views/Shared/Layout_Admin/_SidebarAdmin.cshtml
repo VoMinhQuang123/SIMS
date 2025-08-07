@@ -69,11 +69,61 @@
                 </a>
                 <div class="collapse" id="collapseLayout2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="@Url.Action("Create", "Classroom")">
+                        <a class="nav-link" href="@Url.Action("Create", "Class")">
                             Create new teacher
                         </a>
                         <a class="nav-link" href="@Url.Action("Index", "Class")">
                             Class Lists
+                        </a>
+                    </nav>
+                </div>
+
+
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout3" aria-expanded="false" aria-controls="collapseLayout3">
+                    <div class="sb-nav-link-icon"><i class="fa fa-book"></i></div>
+                    Major
+                    <div class="sb-sidenav-collapse-arrow"></div>
+                </a>
+                <div class="collapse" id="collapseLayout3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="@Url.Action("Create", "Type")">
+                            Create new types
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Type")">
+                          Types List
+                        </a>
+                    </nav>
+                </div>
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout4" aria-expanded="false" aria-controls="collapseLayout4">
+                    <div class="sb-nav-link-icon"><i class="fa fa-book"></i></div>
+                    Semester
+                    <div class="sb-sidenav-collapse-arrow"></div>
+                </a>
+                <div class="collapse" id="collapseLayout4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="@Url.Action("Create", "Type")">
+                            Create new Semester
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Semester")">
+                            Semester List
+                        </a>
+                    </nav>
+                </div>
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayout5" aria-expanded="false" aria-controls="collapseLayout5">
+                    <div class="sb-nav-link-icon"><i class="fa fa-book"></i></div>
+                    Assignment
+                    <div class="sb-sidenav-collapse-arrow"></div>
+                </a>
+                <div class="collapse" id="collapseLayout5" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="@Url.Action("Create", "Type")">
+                            Create new Assignment
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "TeachingAssignment")">
+                            Assignment List
                         </a>
                     </nav>
                 </div>

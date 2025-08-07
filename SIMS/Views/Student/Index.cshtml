@@ -1,5 +1,48 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<SIMS.BDContext.Entity.Student>
+
 @{
+    ViewData["Title"] = "Student List";
+    Layout = "~/Views/Shared/Layout_Admin/_layoutAdmin.cshtml";
 }
+<h2>Student List</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Course</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>DoB</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Major</th> 
+            <th>Class</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.DoB</td>
+                <td>@item.Email</td>
+                <td>@item.Address</td>
+                <td>@item.Type?.TypeName</td>
+				<td>@item.Class?.ClassName</td>
+                @* <td>@item.CreatedAt.ToShortDateString()</td>
+                <td>@item.UpdatedAt.ToShortDateString()</td> *@
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.StudentID" class="btn btn-sm btn-info">Details</a>
+                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
+                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

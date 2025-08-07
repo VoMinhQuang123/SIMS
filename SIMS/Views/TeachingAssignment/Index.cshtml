@@ -1,5 +1,43 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<SIMS.BDContext.Entity.TeachingAssignment>
+
 @{
+    ViewData["Title"] = "TeachingAssignment List";
+    Layout = "~/Views/Shared/Layout_Admin/_layoutAdmin.cshtml";
 }
+<h2>Teacher List</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New TeachingAssignment</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Semester</th>
+            <th>Class</th>
+            <th>Teacher</th>
+            <th>Course</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Semester?.Name</td>
+                <td>@item.Class?.ClassName</td>
+                <td>@item.Teacher?.Name</td>
+                <td>@item.Course?.NameCourse</td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.AssignmentID" class="btn btn-sm btn-info">Details</a>
+                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
+                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

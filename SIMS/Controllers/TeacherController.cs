@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SIMS.Service;
 
 namespace SIMS.Controllers
 {
     public class TeacherController : Controller
     {
-        public IActionResult Index()
+        private readonly Service_Teacher service_Teacher;
+        public TeacherController(Service_Teacher service_Teacher)
+        {
+            this.service_Teacher = service_Teacher;
+        }
+        public async Task<IActionResult> IndexAsync()
         {
 
-            return View();
+            var Teacher = await service_Teacher.GetAllTeachersAsync();
+            return View(Teacher);
         }
         public IActionResult Create()
         {
