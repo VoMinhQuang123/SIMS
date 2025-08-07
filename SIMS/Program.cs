@@ -17,8 +17,38 @@ namespace SIMS
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<ILogin, LoginRepository>();
-            builder.Services.AddScoped<Login_Service>();
+
+            // Register service and repository
+            // Login
+            builder.Services.AddScoped<ILogin, Repository_Login>();
+            builder.Services.AddScoped<Service_Login>();
+            // Admin
+            builder.Services.AddScoped<IAdmin, Repository_Admin>();
+            builder.Services.AddScoped<Service_Admin>();
+            // User
+            builder.Services.AddScoped<IUser, Repository_User>();
+            builder.Services.AddScoped<Service_User>();
+            // Student
+            builder.Services.AddScoped<IStudent, Repository_Student>();
+            builder.Services.AddScoped<Service_Student>();
+            // Teacher
+            builder.Services.AddScoped<ITeacher, Repository_Teacher>();
+            builder.Services.AddScoped<Service_Teacher>();
+            // Class
+            builder.Services.AddScoped<IClass, Repository_Class>();
+            builder.Services.AddScoped<Service_Class>();
+            // Course
+            builder.Services.AddScoped<ICourse, Repository_Course>();
+            builder.Services.AddScoped<Service_Course>();
+            // Type
+            builder.Services.AddScoped<IType, Repository_Type>();
+            builder.Services.AddScoped<Service_Type>();
+            // Semester
+            builder.Services.AddScoped<ISemester, Repository_Semester>();
+            builder.Services.AddScoped<Service_Semester>();
+            // TeachingAssignment
+            builder.Services.AddScoped<ITeachingAssignment, Repository_TeachingAssignment>();
+            builder.Services.AddScoped<Service_TeachingAssignment>();
 
             var app = builder.Build();
 
@@ -31,27 +61,17 @@ namespace SIMS
             }
 
             app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.MapStaticAssets();
-            //app.MapControllerRoute(
-            //    name: "admin",
-            //    pattern: "admin/{controller=Dashboard_Admin}/{action=Index}/{id?}");
-
-            //app.MapControllerRoute(
-            //    name: "teacher",
-            //    pattern: "teacher/{controller=Dashboard_Teacher}/{action=Index}/{id?}");
-
-            //app.MapControllerRoute(
-            //    name: "student",
-            //    pattern: "student/{controller=Dashboard_Student}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",
-                //pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
-                pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
+                pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
+                //pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
                 //pattern: "{controller=Dashboard_Student}/{action=Index}/{id?}")
                 //pattern: "{controller=Login}/{action=Index}/{id?}")
                 .WithStaticAssets();
