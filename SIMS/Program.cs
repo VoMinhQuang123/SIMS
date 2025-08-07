@@ -17,8 +17,6 @@ namespace SIMS
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-<<<<<<< HEAD
             // Register service and repository
             // Login
             builder.Services.AddScoped<ILogin, Repository_Login>();
@@ -50,11 +48,7 @@ namespace SIMS
             // TeachingAssignment
             builder.Services.AddScoped<ITeachingAssignment, Repository_TeachingAssignment>();
             builder.Services.AddScoped<Service_TeachingAssignment>();
-=======
-            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-            builder.Services.AddScoped<StudentService>();
 
->>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
 
             var app = builder.Build();
 

@@ -1,7 +1,6 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<<<<<<< HEAD
 @model List<SIMS.BDContext.Entity.Student>
 
 @{
@@ -10,9 +9,11 @@
 }
 <h2>Student List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Course</a>
-</p>
+<!-- Button open modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createStudentModal">
+    Create New Student
+</button>
+
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -47,67 +48,55 @@
         }
     </tbody>
 </table>
-=======
-@model List<SIMS.Models.StudentViewModel>
-@{
-	Layout = "~/Views/Shared/Layout_Admin/_LayoutAdmin.cshtml";
-}
-<div class="row">
-    <div class="col-sm-12 col-md-12">
-        <h2>List Students</h2>
 
-        @* @if (userRole == "Admin")
-        {
-            <a class="btn btn-primary" asp-action="Create">Add Student</a>
-        }
-
-        @if (TempData["save"] != null)
-        {
-            if (statusSave)
-            {
-                <div class="alert alert-success my-2" role="alert">
-                    Operation successful!
+<!-- Modal create Student -->
+<div class="modal fade" id="createStudentModal" tabindex="-1" aria-labelledby="createStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createStudentModalLabel">Create new Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            }
-            else
-            {
-                <div class="alert alert-danger my-2" role="alert">
-                    Operation failed!
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <textarea class="form-control" id="Email" name="Email" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Address" class="form-label">Address</label>
+                        <textarea class="form-control" id="Address" name="Address" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ClassID" class="form-label">Class</label>
+                        <select class="form-select" id="ClassID" name="ClassID" required>
+                            <option value="">-- Choose Class --</option>
+                            @foreach (var _class in ViewBag.Classes)
+                            {
+                                <option value="@_class.ClassID">@_class.ClassName</option>
+                            }
+                        </select>
+                    </div>
                 </div>
-            }
-        } *@
-
-        <table class="table table-bordered my-2">
-            <thead class="thead-light">
-                <tr>
-                    <th>Name</th>
-                    <th>DOB</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                    <th>Class</th>
-                    <th>User</th>
-                    <th>Actions</th>
-                  
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var student in Model)
-                {
-                    <tr>
-                        <td>@student.Name</td>
-                        <td>@student.DoB?.ToString("yyyy-MM-dd")</td>
-                        <td>@student.Email</td>
-                        <td>@student.TypeName</td>
-                        <td>@student.ClassName</td>
-                        <td>@student.Username</td>
-                        <td>
-                            <a href="/Student/Edit/@student.StudentID">Edit</a> |
-                            <a href="/Student/Delete/@student.StudentID">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
->>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
