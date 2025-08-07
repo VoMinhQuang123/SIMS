@@ -1,7 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model List<SIMS.BDContext.Entity.Class>
+﻿@model List<SIMS.BDContext.Entity.Class>
 
 @{
     ViewData["Title"] = "Class List";
@@ -9,10 +6,12 @@
 }
 <h2>Class List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Class</a>
-</p>
+<!-- Button open modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createClassModal">
+    Create New Class
+</button>
 
+<!-- List class -->
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -29,14 +28,48 @@
                 <td>@item.ClassName</td>
                 <td>@item.Description</td>
                 <td>@item.Type?.TypeName</td>
-                @* <td>@item.CreatedAt.ToShortDateString()</td>
-                <td>@item.UpdatedAt.ToShortDateString()</td> *@
                 <td>
                     <a asp-action="Details" asp-route-id="@item.ClassID" class="btn btn-sm btn-info">Details</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
-                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Modal create class -->
+<div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createClassModalLabel">Create new class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="ClassName" class="form-label">Class Name</label>
+                        <input type="text" class="form-control" id="ClassName" name="ClassName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -30,13 +30,9 @@ namespace SIMS.BDContext
             modelBuilder.Entity<Admin>()
                 .HasOne(a => a.User)
                 .WithOne(u => u.Admin)
-<<<<<<< HEAD
                 .HasForeignKey<Admin>(a => a.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
-=======
-                .HasForeignKey<Admin>(a => a.UserID); // 👈 xác định FK ở bảng Admin
->>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
-
+                //.HasForeignKey<Admin>(a => a.UserID); 
             // Type
             modelBuilder.Entity<Entity.Type>().ToTable("Type");
             modelBuilder.Entity<Entity.Type>().HasKey(t => t.TypeID);

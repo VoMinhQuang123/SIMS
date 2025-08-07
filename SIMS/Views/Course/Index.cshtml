@@ -9,9 +9,10 @@
 }
 <h2>Course List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Course</a>
-</p>
+<!-- Button open modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCourseModal">
+    Create New Course
+</button>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -42,3 +43,41 @@
         }
     </tbody>
 </table>
+
+<!-- Modal create class -->
+<div class="modal fade" id="createCourseModal" tabindex="-1" aria-labelledby="createCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createCourseModalLabel">Create new Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="NameCourse" class="form-label">Class Name</label>
+                        <input type="text" class="form-control" id="NameCourse" name="NameCourse" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="DescriptionCourse" class="form-label">Description</label>
+                        <textarea class="form-control" id="DescriptionCourse" name="DescriptionCourse" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Models;
 using SIMS.Service;
 
@@ -6,51 +9,38 @@ namespace SIMS.Controllers
 {
     public class StudentController : Controller
     {
-<<<<<<< HEAD
         private readonly Service_Student service_Student;
-        public StudentController(Service_Student service_Student)
+        private readonly SIMSDBContext sIMSDBContext;
+        public StudentController(Service_Student service_Student, SIMSDBContext sIMSDBContext)
         {
             this.service_Student = service_Student;
+            this.sIMSDBContext = sIMSDBContext;
         }
         public async Task<IActionResult> Index()
         {
             var Student = await service_Student.GetAllStudentsAsync();
+            ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
+            ViewBag.Classes = await sIMSDBContext.ClassesDb.ToListAsync();
             return View(Student);
         }
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> Create(Student model)
         {
-            return View();
-        }
-
-=======
-        private readonly StudentService _studentService;
-
-        public StudentController(StudentService studentService)
-        {
-            _studentService = studentService;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var students = await _studentService.GetStudentsAsync();
-
-            var viewModel = students.Select(s => new StudentViewModel
+            if (ModelState.IsValid)
             {
-                StudentID = s.StudentID,
-                Name = s.Name,
-                Email = s.Email,
-                Address = s.Address,
-                DoB = s.DoB,
-                ClassName = s.Class?.ClassName,
-                TypeName = s.Type?.TypeName,
-                Username = s.User?.Username
-            }).ToList();
+                model.CreatedAt = DateTime.Now;
+                model.UpdatedAt = DateTime.Now;
+                model.UserID    = 1;
 
-            return View(viewModel);
-
-
-
+                sIMSDBContext.StudentsDb.Add(model);
+                await sIMSDBContext.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
+            ViewBag.Classes = await sIMSDBContext.ClassesDb.ToListAsync();
+            var classList = await sIMSDBContext.StudentsDb.Include(c => c.Type).ToListAsync();
+            return View("Index", classList);
         }
->>>>>>> 4c0943863e934bbf26bf3daa3a457841164258ea
+
     }
 }
