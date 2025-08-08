@@ -23,8 +23,7 @@ namespace SIMS.Repository
 
         public async Task<List<BDContext.Entity.Type>> GetAllTypesAsync()
         {
-            return await _context.TypesDb
-              .ToListAsync();
+            return await _context.TypesDb.ToListAsync();
         }
 
         public Task<BDContext.Entity.Type?> GetTypeByIDAsync(int id)

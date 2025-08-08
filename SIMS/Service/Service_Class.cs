@@ -1,5 +1,8 @@
-﻿using SIMS.BDContext.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Interface;
+using System;
 
 namespace SIMS.Service
 {
@@ -7,11 +10,13 @@ namespace SIMS.Service
     {
         // Inheriting interfaces
         private readonly IClass _class;
+        private readonly SIMSDBContext sIMSDBContext;
 
         // Create constructor
-        public Service_Class(IClass @class)
+        public Service_Class(IClass @class, SIMSDBContext sIMSDBContext)
         {
             _class = @class;
+            this.sIMSDBContext = sIMSDBContext;
         }
 
         // Get all Classes
@@ -21,9 +26,10 @@ namespace SIMS.Service
         }
 
         // Get information Class by ID
-        public async Task<Class?> GetClassByIDAsync(int id)
+        public async Task<List<Class>> GetClassByIDTypeAsync(int id)
         {
-            return await _class.GetClassByIDAsync(id);
+            var result = await sIMSDBContext.ClassesDb.Where(c => c.TypeID == id).ToListAsync();
+            return result;
         }
 
         // Add new Class 
