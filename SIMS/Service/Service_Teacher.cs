@@ -1,4 +1,6 @@
-﻿using SIMS.BDContext.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,13 +12,16 @@ namespace SIMS.Service
 {
     public class Service_Teacher
     {
-        // Inheriting interfaces
+        private readonly SIMSDBContext _context;
+        private readonly Service_User service_User;
         private readonly ITeacher _teacher;
 
         // Create constructor
-        public Service_Teacher(ITeacher teacher)
+        public Service_Teacher(ITeacher teacher, SIMSDBContext _context, Service_User service_User)
         {
             _teacher = teacher;
+            this._context = _context;
+            this.service_User = service_User;
         }
 
         // Get all Teachers
@@ -32,14 +37,21 @@ namespace SIMS.Service
         }
 
         // Add new Teacher 
-        public async Task AddTeacherAsync(Teacher entity)
+        public async Task AddTeacherAsync(Teacher entity, User user)
         {
+            int userId = await service_User.AddUserAsync(user);
+
+            entity.CreatedAt = DateTime.Now;
+            entity.UpdatedAt = DateTime.Now;
+            entity.UserID = userId;
+            _context.TeachersDb.Add(entity);
             await _teacher.AddTeacherAsync(entity);
         }
 
         // Update information Teacher
         public async Task UpdateTeacherAsync(Teacher entity)
         {
+
             await _teacher.UpdateTeacherAsync(entity);
         }
 

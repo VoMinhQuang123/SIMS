@@ -37,8 +37,27 @@ namespace SIMS.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
-            var classList = await sIMSDBContext.CoursesDb.Include(c => c.Type).ToListAsync();
-            return View("Index", classList);
+            var CourseList = await sIMSDBContext.CoursesDb.Include(c => c.Type).ToListAsync();
+            return View("Index", CourseList);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Course model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _courseService.UpdateCourseAsync(model);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Course model)
+        {
+            await _courseService.DeleteCourseAsync(model.CourseID);
+            return RedirectToAction("Index");
         }
     }
 }

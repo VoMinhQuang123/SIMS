@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Interface;
 
 namespace SIMS.Repository
@@ -11,29 +12,45 @@ namespace SIMS.Repository
         {
             _context = context;
         }
-        public Task AddTypeAsync(BDContext.Entity.Type entity)
+        public async Task AddTypeAsync(Type1 entity)
         {
-            throw new NotImplementedException();
+            _context.TypesDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteTypeAsync(int id)
+        public async Task DeleteTypeAsync(int id)
         {
-            throw new NotImplementedException();
+            var type = await _context.TypesDb.FirstOrDefaultAsync(s => s.TypeID == id);
+
+            if (type != null)
+            {
+                _context.TypesDb.Remove(type);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<List<BDContext.Entity.Type>> GetAllTypesAsync()
+        public async Task<List<Type1>> GetAllTypesAsync()
         {
+
             return await _context.TypesDb.ToListAsync();
         }
 
-        public Task<BDContext.Entity.Type?> GetTypeByIDAsync(int id)
+        public Task<BDContext.Entity.Type1?> GetTypeByIDAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateTypeAsync(BDContext.Entity.Type entity)
+        public async Task UpdateTypeAsync(Type1 entity)
         {
-            throw new NotImplementedException();
+            var existingType = await _context.TypesDb.FindAsync(entity.TypeID);
+
+            if (existingType != null)
+            {
+                existingType.TypeName = entity.TypeName;
+                existingType.Description = entity.Description;
+                
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

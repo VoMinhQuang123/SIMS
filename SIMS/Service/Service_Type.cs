@@ -15,25 +15,25 @@ namespace SIMS.Service
         }
 
         // Get all Types
-        public async Task<List<BDContext.Entity.Type>> GetAllTypesAsync()
+        public async Task<List<BDContext.Entity.Type1>> GetAllTypesAsync()
         {
             return await _type!.GetAllTypesAsync();
         }
 
         // Get information Type by ID
-        public async Task<BDContext.Entity.Type?> GetTypeByIDAsync(int id)
+        public async Task<BDContext.Entity.Type1?> GetTypeByIDAsync(int id)
         {
             return await _type.GetTypeByIDAsync(id);
         }
 
         // Add new Type 
-        public async Task AddTypeAsync(BDContext.Entity.Type entity)
+        public async Task AddTypeAsync(BDContext.Entity.Type1 entity)
         {
             await _type.AddTypeAsync(entity);
         }
 
         // Update information Type
-        public async Task UpdateTypeAsync(BDContext.Entity.Type entity)
+        public async Task UpdateTypeAsync(BDContext.Entity.Type1 entity)
         {
             await _type.UpdateTypeAsync(entity);
         }

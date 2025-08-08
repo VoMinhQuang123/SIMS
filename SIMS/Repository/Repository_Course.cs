@@ -12,14 +12,21 @@ namespace SIMS.Repository
         {
             _context = context;
         }
-        public Task AddCourseAsync(Course entity)
+        public async Task AddCourseAsync(Course entity)
         {
-            throw new NotImplementedException();
+            _context.CoursesDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteCourseAsync(int id)
+        public async Task DeleteCourseAsync(int id)
         {
-            throw new NotImplementedException();
+            var course = await _context.CoursesDb.FirstOrDefaultAsync(s => s.CourseID == id);
+
+            if (course != null)
+            {
+                _context.CoursesDb.Remove(course);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Course>> GetAllCoursesAsync()
@@ -34,9 +41,17 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateCourseAsync(Course entity)
+        public async Task UpdateCourseAsync(Course entity)
         {
-            throw new NotImplementedException();
+            var existingCourse = await _context.CoursesDb.FindAsync(entity.CourseID);
+
+            if (existingCourse != null)
+            {
+                existingCourse.NameCourse = entity.NameCourse;
+                existingCourse.DescriptionCourse = entity.DescriptionCourse; 
+                existingCourse.TypeID = entity.TypeID;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

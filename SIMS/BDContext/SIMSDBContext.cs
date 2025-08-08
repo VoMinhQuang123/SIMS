@@ -4,10 +4,14 @@ namespace SIMS.BDContext
 {
     public class SIMSDBContext : DbContext
     {
+        public SIMSDBContext()
+        {
+        }
+
         public SIMSDBContext(DbContextOptions<SIMSDBContext> options) : base(options) { }
         public DbSet<User> UsersDb { get; set; }
         public DbSet<Admin> AdminsDb { get; set; }
-        public DbSet<Entity.Type> TypesDb { get; set; }
+        public DbSet<Entity.Type1> TypesDb { get; set; }
         public DbSet<Class> ClassesDb { get; set; }
         public DbSet<Student> StudentsDb { get; set; } = null!;
         public DbSet<Teacher> TeachersDb { get; set; }
@@ -34,8 +38,8 @@ namespace SIMS.BDContext
                 .OnDelete(DeleteBehavior.Cascade);
                 //.HasForeignKey<Admin>(a => a.UserID); 
             // Type
-            modelBuilder.Entity<Entity.Type>().ToTable("Type");
-            modelBuilder.Entity<Entity.Type>().HasKey(t => t.TypeID);
+            modelBuilder.Entity<Entity.Type1>().ToTable("Type");
+            modelBuilder.Entity<Entity.Type1>().HasKey(t => t.TypeID);
 
             // Class
             modelBuilder.Entity<Class>().ToTable("Class");

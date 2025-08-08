@@ -18,14 +18,21 @@ namespace SIMS.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteStudentAsync(int id)
+        public async Task DeleteStudentAsync(int id)
         {
-            throw new NotImplementedException();
+            var student = await _context.StudentsDb.FirstOrDefaultAsync(s => s.StudentID == id);
+
+            if (student != null)
+            {
+                _context.StudentsDb.Remove(student);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Student>> GetAllStudentsAsync()
         {
             return await _context.StudentsDb
+               .Include(c => c.Class)
                .Include(c => c.Type)
                .ToListAsync();
         }
@@ -35,9 +42,19 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateStudentAsync(Student entity)
+        public async Task UpdateStudentAsync(Student entity)
         {
-            throw new NotImplementedException();
+            var existingStudent = await _context.StudentsDb.FindAsync(entity.StudentID);
+
+            if (existingStudent != null)
+            {
+                existingStudent.Name = entity.Name;
+                existingStudent.DoB = entity.DoB;
+                existingStudent.Address = entity.Address;
+                existingStudent.TypeID = entity.TypeID;
+                existingStudent.ClassID = entity.ClassID;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

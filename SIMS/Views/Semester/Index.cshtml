@@ -9,9 +9,9 @@
 }
 <h2>Semester List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Semester</a>
-</p>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSemesterModal">
+    Create New Semester
+</button>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -30,16 +30,145 @@
             <tr>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
-                <td>@item.StartDate</td>
-                <td>@item.EndDate</td>
+                <td>@item.StartDate?.ToString("yyyy-MM-dd")</td>
+                <td>@item.EndDate?.ToString("yyyy-MM-dd")</td>
                 <td>@item.Type?.TypeName</td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.SemesterID" class="btn btn-sm btn-info">Details</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
-                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                    <a class="btn btn-sm btn-info"
+                       data-bs-toggle="modal"
+                       data-bs-target="#detailsSemesterModal"
+                       onclick="showSemesterDetails('@item.SemesterID','@item.Name','@item.Description', '@item.StartDate?.ToString("yyyy-MM-dd")','@item.EndDate?.ToString("yyyy-MM-dd")'  , '@item.Type?.TypeID'  )">
+                        Details
+                    </a>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="SemesterID" value="@item.SemesterID" />
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Do you want to delete this semester?');">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="modal fade" id="detailsSemesterModal" tabindex="-1" aria-labelledby="detailSemesterLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" id="SemesterID" name="SemesterID" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSemesterModalLabel">Detail Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Semester</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="Description" name="Description" required  />
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="StartDate" class="form-label">Start Date</label>
+						<input type="date" class="form-control" id="StartDate" name="StartDate" required />
+					</div>
+                    <div class="mb-3">
+						<label for="EndDate" class="form-label">End Date</label>
+						<input type="date" class="form-control" id="EndDate" name="EndDate" required />
+					</div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Edit</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal create Student -->
+<div class="modal fade" id="createSemesterModal" tabindex="-1" aria-labelledby="createSemesterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSemesterModalLabel">Create new Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Semester</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="Description" name="Description" required  />
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="StartDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="StartDate" name="StartDate" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="EndDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="EndDate" name="EndDate" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeIDCreate" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+     
+
+   
+    function showSemesterDetails(id,name, description,startdate,end_date, typeId,) {
+      
+         // let startdateChange = new Date(startdate);
+         // let end_dateChange = new Date(end_date);
+         // let formatted = startdateChange.toISOString().split('T')[0];
+         // let formatted1 = end_dateChange.toISOString().split('T')[0];
+
+
+        $('#SemesterID').val(id);
+        $('#Name').val(name);
+        $('#Description').val(description);
+        $('#StartDate').val(startdate);
+        $('#EndDate').val(end_date);
+        $('#TypeID').val(typeId);
+        loadClassesByType(typeId,);
+    }
+</script>

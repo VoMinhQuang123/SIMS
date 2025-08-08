@@ -29,12 +29,62 @@
                 <td>@item.Description</td>
                 <td>@item.Type?.TypeName</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.ClassID" class="btn btn-sm btn-info">Details</a>
-                </td>
+                    <a class="btn btn-sm btn-info"
+                       data-bs-toggle="modal"
+                       data-bs-target="#detailsClassModal"
+                       onclick="showClassDetails('@item.ClassID','@item.ClassName',  '@item.Description' , '@item.Type?.TypeID' )">
+                        Details
+                    </a>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="ClassID" value="@item.ClassID" />
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Do you want to delete this class?');">
+                            Delete
+                        </button>
+                    </form>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="modal fade" id="detailsClassModal" tabindex="-1" aria-labelledby="detailClassLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" id="ClassID" name="ClassID" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createClassModalLabel">Detail class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="ClassName" class="form-label">Class Name</label>
+                        <input type="text" class="form-control" id="ClassName" name="ClassName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Edit</button>
+                    <button type="submit" class="btn btn-secondary">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal create class -->
 <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
@@ -73,3 +123,17 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    
+   
+    function showClassDetails(id,name, description, typeId) {
+
+        $('#ClassID').val(id);
+        $('#ClassName').val(name);
+        $('#Description').val(description);
+        $('#TypeID').val(typeId);
+        loadClassesByType(typeId, classId);
+    }
+
+</script>

@@ -12,14 +12,21 @@ namespace SIMS.Repository
         {
             _context = context; 
         }
-        public Task AddTeachingAssignmentAsync(TeachingAssignment entity)
+        public async Task AddTeachingAssignmentAsync(TeachingAssignment entity)
         {
-            throw new NotImplementedException();
+            _context.TeachingAssignmentsDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteTeachingAssignmentAsync(int id)
+        public async Task DeleteTeachingAssignmentAsync(int id)
         {
-            throw new NotImplementedException();
+            var assignment = await _context.TeachingAssignmentsDb.FirstOrDefaultAsync(s => s.AssignmentID == id);
+
+            if (assignment != null)
+            {
+                _context.TeachingAssignmentsDb.Remove(assignment);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<TeachingAssignment>> GetAllTeachingAssignmentsAsync()
@@ -37,9 +44,18 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateTeachingAssignmentAsync(TeachingAssignment entity)
+        public async Task UpdateTeachingAssignmentAsync(TeachingAssignment entity)
         {
-            throw new NotImplementedException();
+            var existingASM = await _context.TeachingAssignmentsDb.FindAsync(entity.AssignmentID);
+
+            if (existingASM != null)
+            {
+                existingASM.SemesterID = entity.SemesterID;
+                existingASM.ClassID = entity.ClassID;
+                existingASM.TeacherID = entity.TeacherID;
+                existingASM.CourseID = entity.CourseID;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
