@@ -1,33 +1,49 @@
-﻿using SIMS.BDContext.Entity;
+﻿using SIMS.BDContext;
+using SIMS.BDContext.Entity;
 using SIMS.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace SIMS.Repository
 {
     public class Repository_User : IUser
     {
-        public Task AddUserAsync(User entity)
+        private readonly SIMSDBContext _context;
+
+        public Repository_User(SIMSDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task AddUserAsync(User entity)
         {
-            throw new NotImplementedException();
+            await _context.UsersDb.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<User>> GetAllUsersAsync()
+        public async Task DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _context.UsersDb.FindAsync(id);
+            if (user != null)
+            {
+                _context.UsersDb.Remove(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Task<User?> GetUserByIDAsync(int id)
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.UsersDb.ToListAsync();
         }
 
-        public Task UpdateUserAsync(User entity)
+        public async Task<User?> GetUserByIDAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.UsersDb.FindAsync(id);
+        }
+
+        public async Task UpdateUserAsync(User entity)
+        {
+            _context.UsersDb.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

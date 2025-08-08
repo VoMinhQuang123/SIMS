@@ -12,9 +12,10 @@ namespace SIMS.Repository
         {
             _context = context;
         }
-        public Task AddStudentAsync(Student entity)
+        public async Task AddStudentAsync(Student entity)
         {
-            throw new NotImplementedException();
+            _context.StudentsDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteStudentAsync(int id)

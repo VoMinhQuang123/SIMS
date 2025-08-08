@@ -31,7 +31,7 @@ namespace SIMS.Repository
                .ToListAsync();
         }
 
-        public Task<Class?> GetClassByIDAsync(int id)
+        public Task<Class?> GetClassByIDTypeAsync(int id)
         {
             throw new NotImplementedException();
         }

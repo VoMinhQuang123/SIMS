@@ -32,30 +32,33 @@
         {
             <tr>
                 <td>@item.Name</td>
-                <td>@item.DoB</td>
+                <td>@(item.DoB)</td>
                 <td>@item.Email</td>
                 <td>@item.Address</td>
                 <td>@item.Type?.TypeName</td>
-				<td>@item.Class?.ClassName</td>
+                <td>@item.Class?.ClassName</td>
                 @* <td>@item.CreatedAt.ToShortDateString()</td>
-                <td>@item.UpdatedAt.ToShortDateString()</td> *@
+                <td>@item.UpdatedAt.ToShortDateString()</td> *@      
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.StudentID" class="btn btn-sm btn-info">Details</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
-                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                    <a class="btn btn-sm btn-info"
+                       data-bs-toggle="modal"
+                       data-bs-target="#detailsStudentModal"
+                       onclick="showStudentDetails('@item.Name', '@item.DoB?.ToString("yyyy-MM-dd")', '@item.Email' , '@item.Address' , '@item.Type?.TypeID' , '@item.Class?.ClassID' )">
+                        Details
+                    </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<!-- Modal create Student -->
-<div class="modal fade" id="createStudentModal" tabindex="-1" aria-labelledby="createStudentModalLabel" aria-hidden="true">
+<!-- Modal Information, update, delete -->
+<div class="modal fade" id="detailsStudentModal" tabindex="-1" aria-labelledby="detailStudentLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form asp-action="Create" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createStudentModalLabel">Create new Student</h5>
+                    <h5 class="modal-title" id="createStudentModalLabel">Detail Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -65,7 +68,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="Email" class="form-label">Email</label>
-                        <textarea class="form-control" id="Email" name="Email" rows="3"></textarea>
+                        <input type="email" class="form-control" id="Email" name="Email" required readonly/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date of birth</label>
+                        <input type="date" id="DoB" name="DoB" class="form-control" required max="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     </div>
                     <div class="mb-3">
                         <label for="Address" class="form-label">Address</label>
@@ -83,20 +90,156 @@
                     </div>
                     <div class="mb-3">
                         <label for="ClassID" class="form-label">Class</label>
-                        <select class="form-select" id="ClassID" name="ClassID" required>
+                        <select class="form-select" id="ClassID" name="ClassID" required disabled>
                             <option value="">-- Choose Class --</option>
-                            @foreach (var _class in ViewBag.Classes)
-                            {
-                                <option value="@_class.ClassID">@_class.ClassName</option>
-                            }
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Edit</button>
+                    <button type="submit" class="btn btn-secondary">Delete</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+<!-- Modal create Student -->
+<div class="modal fade" id="createStudentModal" tabindex="-1" aria-labelledby="createStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createStudentModalLabel">Create new Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" id="NameCreate" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="EmailCreate" name="Email" required readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date of birth</label>
+                        <input type="date" id="DoBCreate" name="DoB" class="form-control" required max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Address" class="form-label">Address</label>
+                        <textarea class="form-control" id="AddressCreate" name="Address" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeIDCreate" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ClassID" class="form-label">Class</label>
+                        <select class="form-select" id="ClassIDCreate" name="ClassID" required disabled>
+                            <option value="">-- Choose Class --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+     $(document).ready(function () {
+
+        // Sự kiện chọn Major để load Class
+        $('#TypeIDCreate').change(function () {
+            const typeId = $(this).val();
+            const $classSelect = $('#ClassIDCreate');
+
+            $classSelect.empty()
+                        .append('<option value="">-- Choose Class --</option>')
+                        .prop('disabled', true);
+
+            if (typeId) {
+                $.get('/Student/GetClassesByType', { typeId: typeId }, function (data) {
+                    $.each(data, function (i, item) {
+                        $classSelect.append(
+                            `<option value="${item.classID}">${item.className}</option>`
+                        );
+                    });
+                    $classSelect.prop('disabled', false);
+                });
+            }
+        });
+
+        // Tự tạo email khi nhập tên
+        $('#NameCreate').on('input', function () {
+            const fullName = $(this).val().trim().toLowerCase();
+            if (!fullName) return;
+
+            const parts = fullName.split(' ').filter(p => p);
+            if (parts.length < 2) return;
+
+            const lastName = parts[parts.length - 1];
+            const initials = parts.slice(0, -1).map(p => p[0]).join('');
+
+            const nextId = @((ViewBag.NextID ?? 1));
+            const email = `${lastName}${initials}${nextId}@@gmail.com`;
+
+            $('#EmailCreate').val(email); 
+        });
+
+    });
+
+    // Hiển thị dữ liệu sinh viên vào modal
+    function showStudentDetails(name, dob, email, address, typeId, classId) {
+         console.log(dob);
+         let dobChange = new Date(dob);
+         let formatted = dobChange.toISOString().split('T')[0];
+         console.log(formatted);
+
+        $('#Name').val(name);
+        $('#Email').val(email);
+        $('#DoB').val(formatted);
+        $('#Address').val(address);
+        $('#TypeID').val(typeId);
+        loadClassesByType(typeId, classId);
+    }
+    // Load danh sách lớp theo Major
+    function loadClassesByType(typeId, selectedClassId = null) {
+        const $classSelect = $('#ClassID');
+        $classSelect.empty()
+                    .append('<option value="">-- Choose Class --</option>')
+                    .prop('disabled', true);
+
+        if (typeId) {
+            $.get('/Student/GetClassesByType', { typeId: typeId }, function (data) {
+                $.each(data, function (i, item) {
+                    $classSelect.append(
+                        `<option value="${item.classID}">${item.className}</option>`
+                    );
+                });
+                $classSelect.prop('disabled', false);
+
+                if (selectedClassId) {
+                    $classSelect.val(selectedClassId);
+                }
+            });
+        }
+    }
+</script>
+
+
+
