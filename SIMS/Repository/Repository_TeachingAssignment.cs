@@ -39,9 +39,18 @@ namespace SIMS.Repository
               .ToListAsync();
         }
 
-        public Task<TeachingAssignment?> GetTeachingAssignmentByIDAsync(int id)
+        public async Task<List<TeachingAssignment?>> GetTeachingAssignmentByIDAsync(int id)
         {
-            throw new NotImplementedException();
+            var assignment = await _context.TeachingAssignmentsDb
+                .Include(t => t.Class)
+                .Include(t => t.Course)
+                .Include(t => t.Teacher)
+                .Include(t => t.Semester)
+                .Where(t => t.ClassID == id)
+                .ToListAsync();
+
+            return  assignment;
+
         }
 
         public async Task UpdateTeachingAssignmentAsync(TeachingAssignment entity)

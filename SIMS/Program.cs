@@ -49,6 +49,12 @@ namespace SIMS
             builder.Services.AddScoped<ITeachingAssignment, Repository_TeachingAssignment>();
             builder.Services.AddScoped<Service_TeachingAssignment>();
 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(24);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -65,15 +71,16 @@ namespace SIMS
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapStaticAssets();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
+                //pattern: "{controller=Dashboard_Admin}/{action=Index}/{id?}")
                 //pattern: "{controller=Dashboard_Teacher}/{action=Index}/{id?}")
                 //pattern: "{controller=Dashboard_Student}/{action=Index}/{id?}")
-                //pattern: "{controller=Login}/{action=Index}/{id?}")
+                pattern: "{controller=Login}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

@@ -25,7 +25,7 @@ namespace SIMS.Service
         }
 
         // Get information TeachingAssignment by ID
-        public async Task<TeachingAssignment?> GetTeachingAssignmentByIDAsync(int id)
+        public async Task<List<TeachingAssignment?>> GetTeachingAssignmentByIDAsync(int id)
         {
             return await _assignment.GetTeachingAssignmentByIDAsync(id);
         }

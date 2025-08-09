@@ -6,7 +6,7 @@ namespace SIMS.Controllers
 {
     public class TeachingAssignmentController : Controller
     {
-        private readonly Service_TeachingAssignment service_TeachingAssignment ;
+        private readonly Service_TeachingAssignment service_TeachingAssignment;
         private readonly Service_Class service_Class;
         private readonly Service_Teacher service_Teacher;
         private readonly Service_Course service_Course;
@@ -61,6 +61,16 @@ namespace SIMS.Controllers
         {
             await service_TeachingAssignment.DeleteTeachingAssignmentAsync(model.AssignmentID);
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> StudentView(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var assignment = await service_TeachingAssignment.GetTeachingAssignmentByIDAsync(id.Value);
+            return View(assignment);
         }
     }
 }
