@@ -35,6 +35,8 @@ namespace SIMS.Service
         // Add new Class 
         public async Task AddClassAsync(Class entity)
         {
+            entity.CreatedAt = DateTime.Now;
+            entity.UpdatedAt = DateTime.Now;
             await _class.AddClassAsync(entity);
         }
 

@@ -35,12 +35,15 @@ namespace SIMS.Service
         // Add new Course 
         public async Task AddCourseAsync(Course entity)
         {
+
             await _course.AddCourseAsync(entity);
         }
 
         // Update information Course
         public async Task UpdateCourseAsync(Course entity)
         {
+            entity.CreatedAt = DateTime.Now;
+            entity.UpdatedAt = DateTime.Now;
             await _course.UpdateCourseAsync(entity);
         }
 

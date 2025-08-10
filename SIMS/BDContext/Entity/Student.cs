@@ -28,7 +28,7 @@ namespace SIMS.BDContext.Entity
 
         [ForeignKey("Type")]
         public int TypeID { get; set; }
-        public Type? Type { get; set; }
+        public Type1? Type { get; set; }
 
         [ForeignKey("Class")]
         public int? ClassID { get; set; }

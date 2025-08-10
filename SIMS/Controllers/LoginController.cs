@@ -40,18 +40,20 @@ namespace SIMS.Controllers
                     ViewData["MessageLogin"] = "Account is invalid";
                     return View(model);
                 }
+                HttpContext.Session.SetInt32("UserId", user.UserID);
+                HttpContext.Session.SetString("UserRole", user.Role!);
 
                 string? role = user.Role;
                 switch (role)
                 {
                     case "Admin":
-                        return RedirectToAction("Index", "Dashboard_Admin");
+                        return RedirectToAction("Index", "Dashboard_Admin", new {id = user.UserID});
 
                     case "Teacher":
-                        return RedirectToAction("Index", "Dashboard_Teacher");
+                        return RedirectToAction("Index", "Dashboard_Teacher", new { id = user.UserID });
 
                     case "Student":
-                        return RedirectToAction("Index", "Dashboard_Student");
+                        return RedirectToAction("Index", "Dashboard_Student", new { id = user.UserID });
 
                     default:
                         ViewData["MessageLogin"] = "Role is invalid";
@@ -64,11 +66,7 @@ namespace SIMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            foreach (var item in Request.Cookies.Keys)
-            {
-                Response.Cookies.Delete(item);
-            }
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
     }

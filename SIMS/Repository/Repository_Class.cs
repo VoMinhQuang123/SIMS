@@ -14,14 +14,22 @@ namespace SIMS.Repository
             _context = context;
         }
 
-        public Task AddClassAsync(Class entity)
+        public async Task AddClassAsync(Class entity)
         {
-            throw new NotImplementedException();
+
+            _context.ClassesDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteClassAsync(int id)
+        public async Task DeleteClassAsync(int id)
         {
-            throw new NotImplementedException();
+            var classes = await _context.ClassesDb.FirstOrDefaultAsync(s => s.ClassID == id);
+
+            if (classes != null)
+            {
+                _context.ClassesDb.Remove(classes);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Class>> GetAllClassesAsync()
@@ -36,9 +44,17 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateClassAsync(Class entity)
+        public async Task UpdateClassAsync(Class entity)
         {
-            throw new NotImplementedException();
+            var existingClass = await _context.ClassesDb.FindAsync(entity.ClassID);
+
+            if (existingClass != null)
+            {
+                existingClass.ClassName = entity.ClassName;
+                existingClass.Description = entity.Description;
+                existingClass.TypeID = entity.TypeID;    
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

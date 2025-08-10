@@ -19,11 +19,12 @@ namespace SIMS.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var Class = await service_Class.GetAllClassesAsync();
             ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
+            var Class = await service_Class.GetAllClassesAsync();
+            //   ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
             return View(Class);
         }
-        [HttpPost]
+
         public async Task<IActionResult> Create(Class model)
         {
             if (ModelState.IsValid)
@@ -36,8 +37,28 @@ namespace SIMS.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Types = await sIMSDBContext.TypesDb.ToListAsync();
-            var classList = await sIMSDBContext.ClassesDb.Include(c => c.Type).ToListAsync();
-            return View("Index", classList);
+            var SemesterList = await sIMSDBContext.SemestersDb.Include(c => c.Type).ToListAsync();
+            return View("Index", SemesterList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Class model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await service_Class.UpdateClassAsync(model);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Class model)
+        {
+            await service_Class.DeleteClassAsync(model.ClassID);
+            return RedirectToAction("Index");
         }
 
     }

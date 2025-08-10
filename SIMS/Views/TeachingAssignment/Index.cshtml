@@ -2,16 +2,17 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model List<SIMS.BDContext.Entity.TeachingAssignment>
+ 
 
 @{
     ViewData["Title"] = "TeachingAssignment List";
     Layout = "~/Views/Shared/Layout_Admin/_layoutAdmin.cshtml";
 }
-<h2>Teacher List</h2>
+<h2>Assignment List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New TeachingAssignment</a>
-</p>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">
+    Create New Assignment
+</button>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -24,6 +25,8 @@
         </tr>
     </thead>
     <tbody>
+        @if (Model != null)
+{
         @foreach (var item in Model)
         {
             <tr>
@@ -33,11 +36,179 @@
                 <td>@item.Course?.NameCourse</td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.AssignmentID" class="btn btn-sm btn-info">Details</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
-                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                    <a class="btn btn-sm btn-info"
+                       data-bs-toggle="modal"
+                       data-bs-target="#detailsTeacherModal"
+                       onclick="showAssignmentDetails('@item.Semester?.SemesterID','@item.Class?.ClassID', '@item.Teacher?.TeacherID' , '@item.Course?.CourseID' )">
+
+                        Details
+                    </a>
+
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="AssignmentID" value="@item.AssignmentID" />
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Do you want to delete this assignment?');">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
+        }
+        else
+        {
+            <tr><td colspan="5">No teaching assignments available.</td></tr>
+		}
     </tbody>
 </table>
+
+<div class="modal fade" id="detailsAssigmentModal" tabindex="-1" aria-labelledby="detailAssignmentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" id="AssignmentID" name="AssignmentID" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsStudentModal">Detail Teaching Assginment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="SemesterID" class="form-label">Semester</label>
+                        <select class="form-select" id="SemesterID" name="SemesterID" required>
+                            <option value="">-- Semester --</option>
+                            @foreach (var type in ViewBag.Semester)
+                            {
+                                <option value="@type.SemesterID">@type.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ClassID" class="form-label">Class</label>
+                        <select class="form-select" id="ClassID" name="ClassID" required>
+                            <option value="">-- Class --</option>
+                            @foreach (var type in ViewBag.Classes)
+                            {
+                                <option value="@type.ClassID">@type.ClassName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TeacherID" class="form-label">Teacher</label>
+                        <select class="form-select" id="TeacherID" name="TeacherID" required>
+                            <option value="">-- Teacher --</option>
+                            @foreach (var type in ViewBag.Teacher)
+                            {
+                                <option value="@type.TeacherID">@type.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CourseID" class="form-label">Course</label>
+                        <select class="form-select" id="CourseID" name="CourseID" required>
+                            <option value="">-- Course --</option>
+                            @foreach (var type in ViewBag.Course)
+                            {
+                                <option value="@type.CourseID">@type.NameCourse</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Edit</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+    
+
+
+
+<!-- Modal create Student -->
+<div class="modal fade" id="createAssignmentModal" tabindex="-1" aria-labelledby="createAssignmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <input type="hidden" id="AssignmentID" name="AssignmentID" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createAssignmentModalLabel">Create new TeachingAssignment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="SemesterID" class="form-label">Semester</label>
+                        <select class="form-select" id="SemesterID" name="SemesterID" required>
+                            <option value="">-- Semester --</option>
+                            @foreach (var type in ViewBag.Semester)
+                            {
+                                <option value="@type.SemesterID">@type.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ClassID" class="form-label">Class</label>
+                        <select class="form-select" id="ClassID" name="ClassID" required>
+                            <option value="">-- Class --</option>
+                            @foreach (var type in ViewBag.Classes)
+                            {
+                                <option value="@type.ClassID">@type.ClassName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TeacherID" class="form-label">Teacher</label>
+                        <select class="form-select" id="TeacherID" name="TeacherID" required>
+                            <option value="">-- Teacher --</option>
+                            @foreach (var type in ViewBag.Teacher)
+                            {
+                                <option value="@type.TeacherID">@type.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="CourseID" class="form-label">Course</label>
+                        <select class="form-select" id="CourseID" name="CourseID" required>
+                            <option value="">-- Course --</option>
+                            @foreach (var type in ViewBag.Course)
+                            {
+                                <option value="@type.CourseID">@type.NameCourse</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    
+
+    // Hiển thị dữ liệu sinh viên vào modal
+    function showAssignmentDetails(id ,semesterId,classId,teacherId,courseId) {
+         
+         $('#AssignmentID').val(id);
+        $('#SemesterID').val(semesterId);
+        $('#ClassID').val(classId);
+        $('#TeacherID').val(teacherId);
+        $('#CourseID').val(courseId);
+       
+        loadClassesByType(semesterId, classId,teacherId,courseId);
+    }
+   
+</script>
+

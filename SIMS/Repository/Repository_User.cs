@@ -17,6 +17,7 @@ namespace SIMS.Repository
         public async Task AddUserAsync(User entity)
         {
             await _context.UsersDb.AddAsync(entity);
+
             await _context.SaveChangesAsync();
         }
 

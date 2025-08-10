@@ -53,5 +53,25 @@ namespace SIMS.Controllers
             var classes = await service_Class.GetClassByIDTypeAsync(typeId);
             return Json(classes);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Student model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await service_Student.UpdateStudentAsync(model);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Student model)
+        {
+            await service_Student.DeleteStudentAsync(model.StudentID);
+            return RedirectToAction("Index");
+        }
     }
 }

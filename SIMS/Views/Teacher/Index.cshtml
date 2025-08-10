@@ -9,14 +9,14 @@
 }
 <h2>Teacher List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Teacher</a>
-</p>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTeacherModal">
+    Create New Teacher
+</button>
 
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Student Name</th>
+            <th>Teacher Name</th>
             <th>Email</th>
             <th>Major</th>
             <th>Actions</th>
@@ -31,11 +31,136 @@
                 <td>@item.Type?.TypeName</td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.TeacherID" class="btn btn-sm btn-info">Details</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.CourseID" class="btn btn-sm btn-warning">Edit</a> *@
-                    @* <a asp-action="Delete" asp-route-id="@item.CourseID" class="btn btn-sm btn-danger">Delete</a> *@
+                    <a class="btn btn-sm btn-info"
+                       data-bs-toggle="modal"
+                       data-bs-target="#detailsTeacherModal"
+                       onclick="showTeacherDetails('@item.TeacherID','@item.Name', '@item.Email' , '@item.Type?.TypeID' )">
+                        
+                        Details
+                    </a>
+                    
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="TeacherID" value="@item.TeacherID" />
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Do you want to delete this teacher?');">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="modal fade" id="detailsTeacherModal" tabindex="-1" aria-labelledby="detailTeacherLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" id="TeacherID" name="TeacherID" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsTeacherModal">Detail Teacher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Teacher Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" required readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeID" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Edit</button>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal create Student -->
+<div class="modal fade" id="createTeacherModal" tabindex="-1" aria-labelledby="createTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTeacherModalLabel">Create new Teacher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Teacher Name</label>
+                        <input type="text" class="form-control" id="NameCreate" name="Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="EmailCreate" name="Email" required readonly />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="TypeID" class="form-label">Major</label>
+                        <select class="form-select" id="TypeIDCreate" name="TypeID" required>
+                            <option value="">-- Choose Major --</option>
+                            @foreach (var type in ViewBag.Types)
+                            {
+                                <option value="@type.TypeID">@type.TypeName</option>
+                            }
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+     $(document).ready(function () {
+         // Tự tạo email khi nhập tên
+        $('#NameCreate').on('input', function () {
+            const fullName = $(this).val().trim().toLowerCase();
+            if (!fullName) return;
+
+            const parts = fullName.split(' ').filter(p => p);
+            if (parts.length < 2) return;
+
+            const lastName = parts[parts.length - 1];
+            const initials = parts.slice(0, -1).map(p => p[0]).join('');
+
+            const nextId = @((ViewBag.NextID ?? 1));
+            const email = `${lastName}${initials}${nextId}@@gmail.com`;
+
+            $('#EmailCreate').val(email);
+        });
+     });
+
+    // Hiển thị dữ liệu sinh viên vào modal
+    function showTeacherDetails(id, name, email, typeId, ) {
+      
+        $('#TeacherID').val(id);
+        $('#Name').val(name);
+        $('#Email').val(email);
+        $('#TypeID').val(typeId);
+        loadClassesByType(typeId);
+    }
+     
+    
+</script>

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SIMS.BDContext.Entity
 {
-    public class Type
+    public class Type1
     {
         [Key]
         public int TypeID { get; set; }

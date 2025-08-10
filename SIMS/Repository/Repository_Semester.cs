@@ -12,14 +12,21 @@ namespace SIMS.Repository
         {
             _context = context;
         }
-        public Task AddSemesterAsync(Semester entity)
+        public async Task AddSemesterAsync(Semester entity)
         {
-            throw new NotImplementedException();
+            _context.SemestersDb.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteSemesterAsync(int id)
+        public async Task DeleteSemesterAsync(int id)
         {
-            throw new NotImplementedException();
+            var semester = await _context.SemestersDb.FirstOrDefaultAsync(s => s.SemesterID == id);
+
+            if (semester != null)
+            {
+                _context.SemestersDb.Remove(semester);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Semester>> GetAllSemesteresAsync()
@@ -34,9 +41,19 @@ namespace SIMS.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateSemesterAsync(Semester entity)
+        public async Task UpdateSemesterAsync(Semester entity)
         {
-            throw new NotImplementedException();
+            var existingSemester = await _context.SemestersDb.FindAsync(entity.SemesterID);
+
+            if (existingSemester != null)
+            {
+                existingSemester.Name = entity.Name;
+                existingSemester.Description = entity.Description;
+                existingSemester.StartDate = entity.StartDate;
+                existingSemester.EndDate = entity.EndDate;
+                existingSemester.TypeID = entity.TypeID;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
